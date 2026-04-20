@@ -49,7 +49,7 @@ const init = () => {
 		return deploymentStatus.data
 	}
 
-	const deleteExistingComment = async () => {
+	const deleteExistingComment = async (searchText) => {
 		const { data } = await client.issues.listComments({
 			owner: USER,
 			repo: REPOSITORY,
@@ -58,7 +58,8 @@ const init = () => {
 
 		if (data.length < 1) return
 
-		const comment = data.find((comment) => comment.body.includes('This pull request has been deployed to Vercel.'))
+		const comment = data.find((comment) => comment.body.includes(searchText))
+
 		if (comment) {
 			await client.issues.deleteComment({
 				owner: USER,
